@@ -4,7 +4,7 @@ const stackBtn = document.querySelector('.stack');
 const scoreCounter = document.querySelector('.score-counter');
 const endGameScreen = document.querySelector('.end-game-screen');
 const endGameText = document.querySelector('.end-game-text');
-const playAgainButton = document.querySelector('.play-again');
+const playAgainButton = document.querySelector('.play-again-button');
 
 const gridMatrix = [
   [0, 0, 0, 0, 0, 0],
@@ -167,11 +167,15 @@ function updateScore () {
 function endGame(isVictory) {
   if (isVictory) {
     endGameText.innerHTML = 'YOU<br>WON';
-    endGameScreen.classList.add('win');
+    endGameScreen.classList.add('win-end-screen');
+    playAgainButton.classList.add('win');
   }
 
   endGameScreen.classList.remove('hidden');
+  playAgainButton.classList.add('lose');
 }
+
+//restart on button click
 
 function onPlayAgain () {
   location.reload();
@@ -194,4 +198,3 @@ draw();
 
 // Start game Loop
 t = setInterval(main, 600);
-
