@@ -6,6 +6,8 @@ const endGameScreen = document.querySelector('.lose-end-screen');
 const endGameText = document.querySelector('.end-game-text');
 const playAgainButton = document.querySelector('.play-again-button');
 
+
+// GAME FIELD
 const gridMatrix = [
   [0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0],
@@ -25,18 +27,19 @@ let isGameOver = false;
 let score = 0;
 let t;
 
-// All functions
+//########################### ALL FUNCTIONS #################################//
 
 function draw () {
+  // clear old field div //
   grid.innerHTML = '';
 
   gridMatrix.forEach(function (rowContent, rowIndex) {
     rowContent.forEach(function (cellContent, cellIndex) {
-      // Creiamo una cella
+      // create cell
       const cell = document.createElement('div');
       cell.classList.add('cell');
 
-      // Stile scacchiera
+      // chess board style
       const isRowEven = rowIndex % 2 === 0;
       const isCellEven = cellIndex % 2 === 0;
 
@@ -44,16 +47,18 @@ function draw () {
         cell.classList.add('cell-dark');
       }
 
-      // La cella è parte della barra
+      // making bar
       if (cellContent === 1) {
         cell.classList.add('bar');
       }
 
-      // Inseriamola nella griglia
+      // Insert all to game field //
       grid.appendChild(cell);
     });
   });
 }
+
+// 4 basic move functions //
 
 function moveRight (row) {
   row.pop();
@@ -75,7 +80,7 @@ function isLeftEdge (row) {
   return firstElement === 1;
 }
 
-//Full move function
+// Full move function //
 
 function moveBar () {
   const currentRow = gridMatrix[currentRowIndex];
@@ -94,37 +99,37 @@ function moveBar () {
 }
 
 
+
 function checkLost () {
-  // salvo in variabile un riferimento
-  // alla riga corrente e alla riga precedente
   const currentRow = gridMatrix[currentRowIndex];
   const prevRow = gridMatrix[currentRowIndex + 1];
 
-  // se non esiste una riga precedente (inizio gioco)
-  // allo esco dalla funzione
+// console.log(currentRow); == [0, 1, 1, 1, 0, 0] -- here last "1" disappears
+// console.log(prevRow); ==    [1, 1, 1, 0, 0, 0]
+
+
+  // Exclude for first action(exit from func) //
   if (!prevRow) return;
 
-  // controllo se sotto ogni elemento della barra
-  // esiste almeno un elemento dello stack accumulato
+  // CHECK FOR BASE ELEMENTS //
   for (let i = 0; i < currentRow.length; i++) {
-    // se sotto un elemento della barra
-    // non c'è un elemento dello stack accumulato
+    
     if (currentRow[i] === 1 && prevRow[i] === 0) {
-      // rimuovo il pezzo della barra
-      // e la accorcio di un elemento
+      // Reduce bar(where is no base under)//
       currentRow[i] = 0;
       barSize--;
 
-      // se la barra non ha più elementi
-      // hai perso il gioco!
+      // CASE IF BAR FINISHED //
       if (barSize === 0) {
-        isGameOver = true;
+        isGameOver = true; // Game over
         clearInterval(t);
         endGame(false);
       }
     }
   }
 }
+
+// Check WIN //
 
 function checkWin () {
   if (currentRowIndex === 0) {
@@ -134,23 +139,22 @@ function checkWin () {
   }
 }
 
+// STACK FUNCTION //
+
 function onStack () {
-  // controllo se ho vinto o perso
+  // win/lost check
   checkLost();
   checkWin();
 
-  // ho finito il gioco?
-  if (isGameOver) return;
+  if (isGameOver) return; // if true -- finish all
 
-  // aggiorno il punteggio
   updateScore();
 
-  // cambio riga corrente
-  // e riparto dalla prima colonna
+  // Start from new row //
   currentRowIndex = currentRowIndex - 1;
   barDirection = 'right';
   
-  // disegno la barra
+  // draw the bar //
   for (let i = 0; i < barSize; i++) {
     gridMatrix[currentRowIndex][i] = 1;
   }
@@ -159,24 +163,44 @@ function onStack () {
 }
 
 function updateScore () {
+  // Increase score (DEPENDS ON BAR-SIZE) //
+  if (barSize === 3) {
+    score += 3;
+  } else if (barSize === 2) {
+    score += 2;
+  } else if (barSize === 1) {
   score++;
+  }
+
   scoreCounter.innerText = String(score).padStart(5, '0');
 }
 
 // Funzione per il gameover
 function endGame(isVictory) {
+  // check if you won //
   if (isVictory) {
+    draw();
+    if (barSize === 0) {
+      endGameScreen.classList.remove('hidden');  
+      playAgainButton.classList.add('lose');
+      playAgainButton.focus();
+      return;
+    }
+    updateScore();
     endGameText.innerHTML = 'YOU<br>WON';
     endGameScreen.classList.remove('lose-end-screen');
     endGameScreen.classList.add('win-end-screen');
     playAgainButton.classList.add('win');
   }
 
-  endGameScreen.classList.remove('hidden');
+// Lost condition //
+  endGameScreen.classList.remove('hidden');  
   playAgainButton.classList.add('lose');
+  playAgainButton.focus();
 }
 
-//restart on button click
+
+// Restart func for game in button //
 
 function onPlayAgain () {
   location.reload();
@@ -190,13 +214,21 @@ function main () {
   draw();
 }
 
-// Events
+// button events //
+
 stackBtn.addEventListener('click', onStack);
+document.addEventListener('keyup', function(event) {
+  if (event.key === " ") {
+    onStack();                    
+  }
+});
 playAgainButton.addEventListener('click', onPlayAgain);
+
+
+//-------------------START OF GAMEPLAY------------------//
 
 // First draw
 draw();
 
 // Start game Loop
 t = setInterval(main, 600);
-
