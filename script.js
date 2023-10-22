@@ -181,22 +181,28 @@ function endGame(isVictory) {
   if (isVictory) {
     draw();
     if (barSize === 0) {
+      grid.classList.add('grid-lose');
       endGameScreen.classList.remove('hidden');  
       playAgainButton.classList.add('lose');
       playAgainButton.focus();
       return;
     }
     updateScore();
+    grid.classList.add('grid-win');
     endGameText.innerHTML = 'YOU<br>WON';
     endGameScreen.classList.remove('lose-end-screen');
     endGameScreen.classList.add('win-end-screen');
     playAgainButton.classList.add('win');
+  } else {
+      // Lost condition //
+      grid.classList.add('grid-lose');
+      endGameScreen.classList.remove('hidden');  
+      playAgainButton.classList.add('lose');
+      playAgainButton.focus();
   }
 
-// Lost condition //
   endGameScreen.classList.remove('hidden');  
-  playAgainButton.classList.add('lose');
-  playAgainButton.focus();
+
 }
 
 
@@ -227,8 +233,11 @@ playAgainButton.addEventListener('click', onPlayAgain);
 
 //-------------------START OF GAMEPLAY------------------//
 
+alert("To see the game rules poit on the game title!");
+
 // First draw
 draw();
 
 // Start game Loop
-t = setInterval(main, 600);
+t = setInterval(main, 500);
+
