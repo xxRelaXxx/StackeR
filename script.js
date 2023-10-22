@@ -1,8 +1,8 @@
 // Page elements
 const grid = document.querySelector('.grid');
-const stackBtn = document.querySelector('.stack');
+const stackBtn = document.querySelector('.stack-button');
 const scoreCounter = document.querySelector('.score-counter');
-const endGameScreen = document.querySelector('.end-game-screen');
+const endGameScreen = document.querySelector('.lose-end-screen');
 const endGameText = document.querySelector('.end-game-text');
 const playAgainButton = document.querySelector('.play-again-button');
 
@@ -167,6 +167,7 @@ function updateScore () {
 function endGame(isVictory) {
   if (isVictory) {
     endGameText.innerHTML = 'YOU<br>WON';
+    endGameScreen.classList.remove('lose-end-screen');
     endGameScreen.classList.add('win-end-screen');
     playAgainButton.classList.add('win');
   }
@@ -198,3 +199,4 @@ draw();
 
 // Start game Loop
 t = setInterval(main, 600);
+
