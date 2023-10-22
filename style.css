@@ -1,3 +1,5 @@
+/* RESET */
+
 * {
   margin: 0;
   padding: 0;
@@ -5,44 +7,62 @@
 }
 
 body {
-    padding: 20px 20px 100px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    font-family: "Space Mono", monospace;
+  background: linear-gradient(135deg, rgb(3, 3, 3), rgb(4, 2, 75));
+  background-size: 1940px 1080px;
+  background-repeat: no-repeat;
 }
 
 h1 {
   font-size: 40px;
 }
 
-.btn {
-  font-size: 24px;
-  font-family: 'Darker Grotesque', sans-serif;
-  padding: 4px 20px 8px 20px;
-  /* width: 50%; */
+.game-panel {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px ;
+  margin-top: 10px;
+}
+
+.game-panel h1{
+  transition: all 0.5s ease;
+}
+
+.game-panel h1:hover {
+  text-shadow: 0 0 20px darkgray;
+  scale: 1.1;
+  cursor: default;
+}
+
+.stack-button {
   cursor: pointer;
-  text-transform: uppercase;
-  border: 2px solid rgb(0, 23, 50);
-}
-
-.btn:hover {
-  background-color: rgb(203, 224, 221);
-}
-
-.btn-full {
-  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
 }
 
 .score {
+  width: calc((48px * 6) + 4px);
   display: flex;
   justify-content: space-between;
   margin: 20px;
   font-weight: 900;
-  width: 295px;
-  background-color: #f1754e;
+  padding: 3px;
+  transition: all 0.6s ease;
 }
 
-/* # Griglia di gioco */
+.score:hover {
+  box-shadow: 0 0 50px #474747;
+  border: 1px solid #474747;
+  scale: 1.5;
+  cursor: default;
+}
+
+/* game field */
 
 .game-board {
   position: relative;
@@ -61,36 +81,50 @@ h1 {
 }
 
 .grid {
-  width: calc((48px * 6) + 4px);
+  width: calc((48px * 6) + 0px);
   display: flex;
   flex-wrap: wrap;
+  box-shadow: 0 0 50px 10px #afaaaa85;
 }
 
 .cell {
+  background-color: rgb(56, 56, 56);
   width: 48px;
   height: 48px;
   cursor: pointer;
 }
 
 .cell-dark {
-  background-color: rgb(203, 224, 221);
+  background-color: rgb(26, 26, 26);
 }
 
 .bar {
-  background-color: #f1754e;
-  border-radius: 8px;
-  border: 2px solid rgb(0, 23, 50);
+  position: relative;
+  background-color: rgb(57, 0, 133);
+  border: 2px solid rgb(46, 3, 87);
+  border-radius: 5px;
 }
 
+.bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: 0 0 15px #7906bb;
+  border-radius: 5px;
+}
+
+
 /* # Game over */
+
 .end-game-screen {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(224, 7, 7, 0.644), rgba(165, 4, 210, 0.768));
-
   align-items: center;
   justify-content: center;
   display: flex;
@@ -99,31 +133,41 @@ h1 {
   gap: 16px;
 }
 
-.win-end-screen {
-  background: linear-gradient(135deg, rgba(170, 255, 0, 0.3), rgba(170, 255, 0, 0.8));
+.end-game-screen.win-end-screen {
+  background: linear-gradient(135deg, rgba(93, 138, 5, 0.3), rgba(170, 255, 0, 0.5));
+}
+
+.end-game-screen.lose-end-screen {
+  background: linear-gradient(135deg, rgba(224, 7, 7, 0.444), rgba(165, 4, 210, 0.468));
 }
 
 .play-again-button {
+  text-decoration: none;
+  font-weight: 900;
+  font-size: large;
   width: 200px;
   height: 60px;
   border-radius: 30px;
-  transition: box-shadow 0.7s, background-color 0.75s ease, transform 0.4s ease, border 0.7s ease;
+  transition: all 0.5s ease;
   
   &.lose {
+    color: #720404;
     background-color: rgb(211, 0, 0); /* Change to dark violet on lose */
     box-shadow: 0px 0px 15px 2px rgba(255, 38, 0, 0.959); /* Adjust shadow */
     border: 2px solid #8C0000;
     }	
   
   &.win {
+    color: rgb(3, 107, 3);
     background-color: rgb(0, 255, 76); /* Change to blue on win */
     box-shadow: 0px 0px 15px 2px rgba(50, 228, 124, 0.959); /* Adjust shadow */
-    border: 2px solid green;
+    border: 2px solid rgb(3, 107, 3);
 	}
     
 }
 
 .play-again-button:hover {
+  color: #3e0255;
   background-color: rgb(141, 22, 189);
   box-shadow: 0px 0px 50px 17px rgba(133, 50, 228, 0.959);
   transform: scale(1.05);
