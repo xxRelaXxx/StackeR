@@ -5,7 +5,7 @@ const scoreCounter = document.querySelector('.score-counter');
 const endGameScreen = document.querySelector('.lose-end-screen');
 const endGameText = document.querySelector('.end-game-text');
 const playAgainButton = document.querySelector('.play-again-button');
-
+const infoButton = document.querySelector('.info-button');
 
 // GAME FIELD
 const gridMatrix = [
@@ -230,10 +230,13 @@ document.addEventListener('keyup', function(event) {
 });
 playAgainButton.addEventListener('click', onPlayAgain);
 
+infoButton.addEventListener('click', function(event) {
+  alert("Click on the game-board to stack the blocks");
+});
+
+
 
 //-------------------START OF GAMEPLAY------------------//
-
-alert("To see the game rules poit on the game title!");
 
 // First draw
 draw();
